@@ -7,12 +7,21 @@ const selection=()=>{
         return selection
     }
 }
-
-window.addEventListener("mouseup",selection)
-
-if (selection()!=""){
-    
+const googleSearch =()=>{
+    if (selection()!=""){
+        var search = "https://www.google.com/search?q=" + encodeURIComponent(selection());
+        window.open(search, '_blank', 'width=800,height=600');
+    }
 }
+
+const allFunctions=()=>{
+    selection()
+    googleSearch()
+}
+
+window.addEventListener("mouseup",allFunctions)
+
+
 
 // tableau.push(selection())
 
