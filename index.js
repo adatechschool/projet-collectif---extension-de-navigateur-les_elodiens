@@ -1,6 +1,3 @@
-tableau=[]
-
-
 //fonction de récupération du mot sélectionné
 const selection=()=>{
     if (window.getSelection){
@@ -23,13 +20,26 @@ const divReponse= document.getElementById("reponse")
 const buttonGSearch=document.createElement("Button")
 
 
+async function definition(){
+    const urlMot=  `https://api.dictionaryapi.dev/api/v2/entries/en/${selection()}`
+    let apiObject= await fetch(urlMot)
+    let jsonObject= await apiObject.json()
+    let motDefinition = console.log(jsonObject[0]["meanings"][0]["definitions"][0]["definition"])
+    return motDefinition
+
+}
+
 //affichage du mot sélectionné dans une la page
 const displaySelectedWord=()=>{
     if (selection()!=""){
         const reponseContainer = document.createElement('p')
+        const definitionContainer=document.createElement('p')
         reponseContainer.innerHTML=""
+        definitionContainer.innerHTML=""
         reponseContainer.innerText=`Mot Sélectionné:\n ${selection()}`
+        definitionContainer.innText=definition()
         divReponse.appendChild(reponseContainer)
+        divReponse.appendChild(definitionContainer)
     }
 }
 
