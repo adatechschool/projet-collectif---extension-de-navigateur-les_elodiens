@@ -1,12 +1,16 @@
 tableau=[]
 
+
+//fonction de récupération du mot sélectionné
 const selection=()=>{
     if (window.getSelection){
-        let selection= window.getSelection().toString()
-        console.log(`selection : ${selection}`)
-        return selection
+        let selectedString= window.getSelection().toString()
+        // console.log(`selection : ${selection}`)
+        return selectedString
     }
 }
+
+//fontion de lancement d'une recherche google à partir du retour de la fonction seletion
 const googleSearch =()=>{
     if (selection()!=""){
         var search = "https://www.google.com/search?q=" + encodeURIComponent(selection());
@@ -14,12 +18,40 @@ const googleSearch =()=>{
     }
 }
 
-const allFunctions=()=>{
-    selection()
-    googleSearch()
+
+const divReponse= document.getElementById("reponse")
+const buttonGSearch=document.createElement("Button")
+
+
+//affichage du mot sélectionné dans une la page
+const displaySelectedWord=()=>{
+    if (selection()!=""){
+        const reponseContainer = document.createElement('p')
+        reponseContainer.innerHTML=""
+        reponseContainer.innerText=`Mot Sélectionné:\n ${selection()}`
+        divReponse.appendChild(reponseContainer)
+    }
 }
 
-window.addEventListener("mouseup",allFunctions)
+//creation du bouton de lancement de la recherche google
+const createButton=() =>{
+    if (selection()!=""){
+        // divReponse.removeChild(buttonGSearch)
+        buttonGSearch.id="buttonID"
+        buttonGSearch.textContent="Google Search"
+        divReponse.appendChild(buttonGSearch)
+    }
+}
+
+const allFunctions=()=>{
+    selection()
+    displaySelectedWord()
+    createButton()
+
+}
+
+document.addEventListener("mouseup",allFunctions)
+buttonGSearch.addEventListener("click",googleSearch)
 
 
 
