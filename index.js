@@ -34,10 +34,19 @@ async function definition(){
 //affichage du mot sélectionné dans la page (future popup)
 const displaySelectedWord=()=>{
     if (selection()!=""){
-        const reponseContainer = document.createElement('p')
-        reponseContainer.innerHTML=""
-        reponseContainer.innerText=`Mot Sélectionné:\n ${selection()}`
+        const reponseContainer = document.createElement('div')
+        reponseContainer.classList="modal"
+        reponseContainer.style.zIndex=1
+        reponseContainer.style.display='block'
+        reponseContainer.style.position='fixed'
+        reponseContainer.style.border= '1px solid #888'
+        const selectionContainer =document.createElement('div')
+        const selectedWord=document.createElement('p')
+        selectedWord.innerHTML=""
+        selectedWord.innerText=`Mot Sélectionné:\n ${selection()}`
         divReponse.appendChild(reponseContainer)
+        reponseContainer.appendChild(selectionContainer)
+        selectionContainer.appendChild(selectedWord)
     }
 }
 
@@ -45,7 +54,7 @@ const displaySelectedWord=()=>{
 async function displayDefinition(){
     if (selection()!=""){
         console.log('displayDefinition')
-        const definitionContainer=document.createElement('p')
+        const definitionContainer= document.createElement('p')
         definitionContainer.innerHTML=""
         console.log(`displayDefinition: ${await definition()}`)
         definitionContainer.innerText=await definition() //récupération du retour de la fonction definition, donnant la définition du mot
