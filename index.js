@@ -22,23 +22,32 @@ const buttonGSearch=document.createElement("Button")
 
 async function definition(){
     const urlMot=  `https://api.dictionaryapi.dev/api/v2/entries/en/${selection()}`
+    console.log(urlMot)
     let apiObject= await fetch(urlMot)
     let jsonObject= await apiObject.json()
-    let motDefinition = console.log(jsonObject[0]["meanings"][0]["definitions"][0]["definition"])
+    let motDefinition = jsonObject[0]["meanings"][0]["definitions"][0]["definition"]
+    console.log(motDefinition)
     return motDefinition
 
 }
 
-//affichage du mot sélectionné dans une la page
+//affichage du mot sélectionné dans la page (future popup)
 const displaySelectedWord=()=>{
     if (selection()!=""){
         const reponseContainer = document.createElement('p')
-        const definitionContainer=document.createElement('p')
         reponseContainer.innerHTML=""
-        definitionContainer.innerHTML=""
         reponseContainer.innerText=`Mot Sélectionné:\n ${selection()}`
-        definitionContainer.innText=definition()
         divReponse.appendChild(reponseContainer)
+    }
+}
+
+
+const displayDefinition=()=>{
+    if (selection()!=""){
+        console.log('displayDefinition')
+        const definitionContainer=document.createElement('p')
+        definitionContainer.innerHTML=""
+        definitionContainer.innerText=definition() //récupération du retour de la fonction definition, donnant la définition du mot
         divReponse.appendChild(definitionContainer)
     }
 }
@@ -56,11 +65,14 @@ const createButton=() =>{
 const allFunctions=()=>{
     selection()
     displaySelectedWord()
+    displayDefinition()
     createButton()
 
 }
 
+//Appel des fonctions appelées dans allFunctions après fin de click de la souris
 document.addEventListener("mouseup",allFunctions)
+//Appell de la recherche google search par click sur le bouton buttonGSearch
 buttonGSearch.addEventListener("click",googleSearch)
 
 
