@@ -82,3 +82,6 @@ buttonGSearch.addEventListener("click",googleSearch)
 // tableau.push(selection())
 
 // console.log(tableau)
+
+
+
