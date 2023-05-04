@@ -22,11 +22,11 @@ const buttonGSearch=document.createElement("Button")
 
 async function definition(){
     const urlMot=  `https://api.dictionaryapi.dev/api/v2/entries/en/${selection()}`
-    console.log(urlMot)
+    console.log(`function definition(): ${urlMot}`)
     let apiObject= await fetch(urlMot)
     let jsonObject= await apiObject.json()
     let motDefinition = jsonObject[0]["meanings"][0]["definitions"][0]["definition"]
-    console.log(motDefinition)
+    console.log(`fonction definition: ${motDefinition}`)
     return motDefinition
 
 }
@@ -42,12 +42,13 @@ const displaySelectedWord=()=>{
 }
 
 
-const displayDefinition=()=>{
+async function displayDefinition(){
     if (selection()!=""){
         console.log('displayDefinition')
         const definitionContainer=document.createElement('p')
         definitionContainer.innerHTML=""
-        definitionContainer.innerText=definition() //récupération du retour de la fonction definition, donnant la définition du mot
+        console.log(`displayDefinition: ${await definition()}`)
+        definitionContainer.innerText=await definition() //récupération du retour de la fonction definition, donnant la définition du mot
         divReponse.appendChild(definitionContainer)
     }
 }
@@ -67,6 +68,7 @@ const allFunctions=()=>{
     displaySelectedWord()
     displayDefinition()
     createButton()
+    // googleSearch()
 
 }
 
