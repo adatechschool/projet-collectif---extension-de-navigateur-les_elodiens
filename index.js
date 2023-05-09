@@ -46,30 +46,60 @@ document.addEventListener("mouseup",  async function(event) {
         popup.style.top = `${topPosition}px`;
         
         try {
+            setTimeout(async function() {
+                
+            
             let response = await fetch(urlMot);
             let data = await response.json();
             console.log(response.status);
 
             if (response.status != 404) {
                 const motDefinition = data[0]["meanings"][0]["definitions"][0]["definition"];
-                const audio = data[0]["phonetics"][1]["audio"]
-                
-                console.log(audio);
                 console.log(motDefinition);
-                
-                const iconAudio = document.createElement("p")
-                iconAudio.innerText = "🔈"
-                // iconAudio.src ="/speaker_3760.jpeg"
-                
-                selectedContainer.appendChild(iconAudio)
 
-                iconAudio.addEventListener("mousedown", function(){
-                    const vocalAudio = document.createElement("audio") 
-                    vocalAudio.src = audio
-                    vocalAudio.play()
-                    popup.appendChild(vocalAudio)  
-                })
-                
+                const objecttotest = data[0]["phonetics"]
+                console.log(typeof(objecttotest));
+                console.log(objecttotest);
+
+                if(data[0]["phonetics"]==[] ){
+ 
+                    // const audioSpeaker = data[0]["phonetics"][0]["audio"]
+                    
+                    // console.log(audioSpeaker);
+
+                    const iconAudio = document.createElement("p")
+                    iconAudio.innerText = "🔇"
+                    
+                    selectedContainer.appendChild(iconAudio)
+
+                    
+                } else if (data[0]["phonetics"][0]["audio"]=="") {
+                    console.log("test");
+                    const iconAudio = document.createElement("p")
+                    iconAudio.innerText = "🔇"
+                    
+                    selectedContainer.appendChild(iconAudio)
+
+
+
+                }else{
+                 
+                    const audioSpeaker = data[0]["phonetics"][0]["audio"]
+                    
+                    console.log(audioSpeaker);
+
+                    const iconAudio = document.createElement("p")
+                    iconAudio.innerText = "🔈"
+                    
+                    selectedContainer.appendChild(iconAudio)
+
+                    iconAudio.addEventListener("mousedown", function(){
+                        const vocalAudio = document.createElement("audio") 
+                        vocalAudio.src = audioSpeaker
+                        vocalAudio.play()
+                        popup.appendChild(vocalAudio)  
+                    })
+                }
 
                 defintionContainer.innerText = motDefinition;
                 
@@ -100,8 +130,11 @@ document.addEventListener("mouseup",  async function(event) {
             window.addEventListener("scroll",() => popup.remove());
             window.addEventListener("resize",() => popup.remove());
             // window.addEventListener("click", () => popup.remove());
+        
+        }, 5000)
 
         } 
+       
         catch(error) { 
             alert( "nothing")
           
