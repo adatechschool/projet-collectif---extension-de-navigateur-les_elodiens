@@ -16,39 +16,75 @@ document.addEventListener("mouseup",  async function(event) {
     console.log(selectedString);
 
     if (selectedString) {
+    
         const urlMot=  `https://api.dictionaryapi.dev/api/v2/entries/en/${selectedString}`
 
+        const popup = document.createElement("div");
+        popup.style = popupStyles;
+       
+        const selectedContainer = document.createElement("h2");
+        selectedContainer.style.color = "white"
+        selectedContainer.innerText= selectedString
+        popup.appendChild(selectedContainer);
+       
+        const defintionContainer = document.createElement("p");
+        popup.appendChild(defintionContainer);
+        
+        const buttonGSearch = document.createElement("button")
+        buttonGSearch.textContent = "recherche google"
+        popup.appendChild(buttonGSearch);
+        
+        document.body.appendChild(popup);
+
+            
+        const popupWidth = popup.offsetWidth;
+        const popupHeight = popup.offsetHeight;
+        const leftPosition = event.pageX - popupWidth / 2;
+        const topPosition = event.pageY - popupHeight - 10;
+
+        popup.style.left = `${leftPosition}px`;
+        popup.style.top = `${topPosition}px`;
         
         try {
             let response = await fetch(urlMot);
             let data = await response.json();
+            console.log(response.status);
 
-            if (data.length > 0) {
+            if (response.status != 404) {
                 const motDefinition = data[0]["meanings"][0]["definitions"][0]["definition"];
                 console.log(motDefinition);
                 
-                
-                const popup = document.createElement("div");
-                popup.style = popupStyles;
-
-                const selectedContainer = document.createElement("h2");
-                selectedContainer.style.color = "white"
-                selectedContainer.innerText= selectedString
-                popup.appendChild(selectedContainer);
-
-                const defintionContainer = document.createElement("p");
                 defintionContainer.innerText = motDefinition;
-                popup.appendChild(defintionContainer);
                 
-                const buttonGSearch = document.createElement("button")
-                buttonGSearch.textContent = "more"
+                
 
                     if('click',buttonGSearch) {
                         let search = "https://www.google.com/search?q=" + encodeURIComponent(selectedString);
                         window.open(search, '_blank', 'width=800,height=600');
                     }
 
-                // buttonGSearch.innerText = button.onclick("https://www.google.com/search?q=" + encodeURIComponent(selectedString), '_blank', 'width=800,height=600');
+            
+               
+            } else{
+                const motErreur = "couldn't find definition"
+                console.log(motErreur);
+                defintionContainer.innerText = motErreur;
+            }
+
+
+            window.addEventListener("scroll",() => popup.remove());
+            window.addEventListener("resize",() => popup.remove());
+            popup.addEventListener('mousedown', () => popup.remove());
+        } 
+        catch(error) { 
+            alert( "nothing")
+          
+        }    
+       
+    }
+});
+
+// buttonGSearch.innerText = button.onclick("https://www.google.com/search?q=" + encodeURIComponent(selectedString), '_blank', 'width=800,height=600');
 
                 // function redirect (){
                 //     window.open("https://www.google.com/search?q=" + encodeURIComponent(selectedString))
@@ -60,35 +96,6 @@ document.addEventListener("mouseup",  async function(event) {
                 //     const search = `https://www.google.com/search?q=${selectedString}`;
                 //     chrome.tabs.create({ url : search});
                 // });
-                
-                popup.appendChild(buttonGSearch);
-
-                document.body.appendChild(popup);
-
-            
-                const popupWidth = popup.offsetWidth;
-                const popupHeight = popup.offsetHeight;
-                const leftPosition = event.pageX - popupWidth / 2;
-                const topPosition = event.pageY - popupHeight - 10;
-
-                popup.style.left = `${leftPosition}px`;
-                popup.style.top = `${topPosition}px`;
-                
-               
-                window.addEventListener("scroll",() => popup.remove());
-                window.addEventListener("resize",() => popup.remove());
-                popup.addEventListener('mousedown', () => popup.remove());
-            }
-
-        }
-        catch(err) { 
-            alert ('erreur');
-        }    
-       
-    }
-});
-
-
  // const popupOptions = `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`;
             //     const popupContent = 
             //         `
