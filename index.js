@@ -52,16 +52,41 @@ document.addEventListener("mouseup",  async function(event) {
 
             if (response.status != 404) {
                 const motDefinition = data[0]["meanings"][0]["definitions"][0]["definition"];
+                const audio = data[0]["phonetics"][1]["audio"]
+                
+                console.log(audio);
                 console.log(motDefinition);
                 
-                defintionContainer.innerText = motDefinition;
+                const iconAudio = document.createElement("p")
+                iconAudio.innerText = "🔈"
+                // iconAudio.src ="/speaker_3760.jpeg"
                 
+                selectedContainer.appendChild(iconAudio)
+
+                iconAudio.addEventListener("mousedown", function(){
+                    const vocalAudio = document.createElement("audio") 
+                    vocalAudio.src = audio
+                    vocalAudio.play()
+                    popup.appendChild(vocalAudio)  
+                })
                 
 
-                    if('click',buttonGSearch) {
-                        let search = "https://www.google.com/search?q=" + encodeURIComponent(selectedString);
-                        window.open(search, '_blank', 'width=800,height=600');
-                    }
+                defintionContainer.innerText = motDefinition;
+                
+
+
+
+                buttonGSearch.addEventListener("mousedown", function() {
+                console.log('button clicked');
+                const search = `https://www.google.com/search?q=${selectedString}`;
+                window.open("https://www.google.com/search?q=" + encodeURIComponent(selectedString))
+                // chrome.tabs.create({ url : search});
+                })
+
+                // if('click',buttonGSearch) {
+                //     let search = "https://www.google.com/search?q=" + encodeURIComponent(selectedString);
+                //     window.open(search, '_blank', 'width=800,height=600');
+                // }
 
             
                
@@ -74,7 +99,8 @@ document.addEventListener("mouseup",  async function(event) {
 
             window.addEventListener("scroll",() => popup.remove());
             window.addEventListener("resize",() => popup.remove());
-            popup.addEventListener('mousedown', () => popup.remove());
+            // window.addEventListener("click", () => popup.remove());
+
         } 
         catch(error) { 
             alert( "nothing")
@@ -91,10 +117,7 @@ document.addEventListener("mouseup",  async function(event) {
                 // }
                 // buttonGSearch.onclick("click", redirect())
 
-                // buttonGSearch.addEventListener("click", function() {
-                //     console.log('button clicked');
-                //     const search = `https://www.google.com/search?q=${selectedString}`;
-                //     chrome.tabs.create({ url : search});
+                
                 // });
  // const popupOptions = `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`;
             //     const popupContent = 
