@@ -9,6 +9,12 @@ const popupStyles = `
 
 `;
 
+const containerStyle= `
+    display: inline-block;
+    
+`
+
+
 let selectedString;
 
 document.addEventListener("mouseup",  async function(event) {
@@ -23,8 +29,9 @@ document.addEventListener("mouseup",  async function(event) {
         popup.style = popupStyles;
        
         const selectedContainer = document.createElement("h2");
-        selectedContainer.style.color = "white"
-        selectedContainer.innerText= selectedString
+        selectedContainer.style.color = "white";
+        selectedContainer.innerText= selectedString;
+        selectedContainer.style = containerStyle;
         popup.appendChild(selectedContainer);
        
         const defintionContainer = document.createElement("p");
@@ -61,24 +68,26 @@ document.addEventListener("mouseup",  async function(event) {
                 console.log(typeof(objecttotest));
                 console.log(objecttotest);
 
-                if(data[0]["phonetics"]==[] ){
+                if(data[0]["phonetics"].length ==0 ){
  
                     // const audioSpeaker = data[0]["phonetics"][0]["audio"]
                     
                     // console.log(audioSpeaker);
-
-                    const iconAudio = document.createElement("p")
-                    iconAudio.innerText = "🔇"
-                    
-                    selectedContainer.appendChild(iconAudio)
+                    console.log("tete");
+                    const iconAudio = document.createElement("p");
+                    iconAudio.innerText = "🔇";
+                    iconAudio.style = containerStyle;
+                    selectedContainer.appendChild(iconAudio);
 
                     
                 } else if (data[0]["phonetics"][0]["audio"]=="") {
-                    console.log("test");
-                    const iconAudio = document.createElement("p")
-                    iconAudio.innerText = "🔇"
                     
-                    selectedContainer.appendChild(iconAudio)
+                    console.log("test");
+                   
+                    const iconAudio = document.createElement("p");
+                    iconAudio.innerText = "🔇";
+                    iconAudio.style = containerStyle;
+                    selectedContainer.appendChild(iconAudio);
 
 
 
@@ -90,7 +99,8 @@ document.addEventListener("mouseup",  async function(event) {
 
                     const iconAudio = document.createElement("p")
                     iconAudio.innerText = "🔈"
-                    
+                    iconAudio.style = containerStyle;
+
                     selectedContainer.appendChild(iconAudio)
 
                     iconAudio.addEventListener("mousedown", function(){
@@ -101,7 +111,7 @@ document.addEventListener("mouseup",  async function(event) {
                     })
                 }
 
-                defintionContainer.innerText = motDefinition;
+                defintionContainer.innerText = `Def : ${motDefinition}`;
                 
 
 
