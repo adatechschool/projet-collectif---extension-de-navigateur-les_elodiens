@@ -2,7 +2,9 @@ const popupStyles = `
   position: absolute;
   z-index: 9999;
   max-width: 300px;
-  background-color: rgb(76, 171, 166);
+  backdrop-filter: none;
+    
+  background-color: gainsboro;
   border: 2px solid black;
   border-radius: 10px;
   padding: 10px;
@@ -11,7 +13,7 @@ const popupStyles = `
 
 const containerStyle= `
     display: inline-block;
-    color: white
+    color: black
     
 `
 
