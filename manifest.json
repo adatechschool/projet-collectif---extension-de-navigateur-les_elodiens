@@ -3,24 +3,21 @@
     "name": "word",
     "description": "Show word",
     "version": "0.0.3",
-    "content-script": [
+
+    "content_scripts": [
         {   
-            "all-frame": true,
-            "matches": ["*//*/"],
+            "matches": ["<all_urls>"],
             "js": ["index.js"]
-
         }
-
     ],
+
     "permissions": [
         "activeTab",
         "tabs"
     ],
-    "action" : {
-        "default_icon" : {
 
-        }
+    "action" : {
+        "default_title" : "Trouve la définition"
     }
-   
 }
 
