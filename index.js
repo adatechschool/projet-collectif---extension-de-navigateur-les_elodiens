@@ -16,38 +16,52 @@ const containerStyle= `
 `
 
 
-let selectedString;
-
+// let selectedString;
+// selection d'un mot sur la page suite à l'évèneùent mouse up
 document.addEventListener("mouseup",  async function(event) {
-    const selectedString= window.getSelection().toString().trim();
+    const selectedString= window.getSelection().toString().trim(); // conversion en string et effacement des espaces
     console.log(selectedString);
 
+
+    //si le mot sélectionné on crée les éléments de la div popup
     if (selectedString) {
     
         const urlMot=  `https://api.dictionaryapi.dev/api/v2/entries/en/${selectedString}`
 
+
+        //création de la div popup
         const popup = document.createElement("div");
         popup.style = popupStyles;
        
+        //création de l'élément affichant le nom sélectionné
         const selectedContainer = document.createElement("h2");
         selectedContainer.style.color = "white";
         selectedContainer.innerText= selectedString;
         selectedContainer.style = containerStyle;
         popup.appendChild(selectedContainer);
        
+        //création de l'élément contenant la définition
         const defintionContainer = document.createElement("p");
         popup.appendChild(defintionContainer);
         
+        //création de l'élément contenant le bouton de parcours des définitions
+        const nextQuestionContainer = document.createElement("p");
+        popup.appendChild(nextQuestionContainer);
+
+        //création de l'élément contenant les synonymes
         const synonymsContainer = document.createElement("p");
         popup.appendChild(synonymsContainer);
 
+        //création de l'élément contenant le bouton de recherche google
         const buttonGSearch = document.createElement("button")
         buttonGSearch.textContent = "Google Search"
         popup.appendChild(buttonGSearch);
         
+
+        // ajout de la div pop en tant qu'enfant du body
         document.body.appendChild(popup);
 
-            
+        // style de la popup
         const popupWidth = popup.offsetWidth;
         const popupHeight = popup.offsetHeight;
         const leftPosition = event.pageX - popupWidth / 2;
@@ -57,28 +71,56 @@ document.addEventListener("mouseup",  async function(event) {
         popup.style.top = `${topPosition}px`;
         
         try {
-            setTimeout(async function() {
+            // setTimeout(async function() {
                 
-            
+            // fetch de l'API faisant référence au mot séletionné
             let response = await fetch(urlMot);
+            //Conversion en objet JSON
             let data = await response.json();
             console.log(response.status);
 
+            // si l'API trouve le mot, on affiche l'ensemble des definitions en commençant par l'élément 0 du tableau en initialisant un compteur à 0
             if (response.status != 404) {
-                const motDefinition = data[0]["meanings"][0]["definitions"][0]["definition"];
+                let compteur=0
+                let motDefinition = data[0]["meanings"][0]["definitions"][compteur]["definition"]; //Variable donnant la définition du mot sélectionné
+                let objectLength=data[0]["meanings"][0]["definitions"].length //Longeur du tableau pour permettre son parcours
                 console.log(motDefinition);
+                defintionContainer.innerHTML = `<strong> Definition </strong> (${compteur+1}/${objectLength}) : ${motDefinition}`; // affichage de la défintiion de l'index 0 du tableau
 
+                // création d'un élément permettant le parcours des questions dispos
+                nextQuestionContainer.innerText=">"
+                //incrément du compteur pour parcours des éléments du tableau
+                compteur+=1
+                //parcours des éléments du tableau par clique sur le chevron
+                nextQuestionContainer.addEventListener("mousedown",function(){
+                    console.log(compteur)
+                    motDefinition = data[0]["meanings"][0]["definitions"][compteur]["definition"]
+                    console.log(motDefinition)
+                    defintionContainer.innerHTML=""
+                    defintionContainer.innerHTML = `<strong> Definition </strong> (${compteur+1}/${objectLength}) : ${motDefinition}`;
+                    compteur+=1
+                    // si le compteur atteint la taille du tableau, il est rénitialisé à 0
+                    if (compteur==data[0]["meanings"][0]["definitions"].length-1){
+                        compteur=0
+                    }    
+                    
+                })
+                
+                //récupération de la liste des synonymes
                 const synonymsArray = data[0]["meanings"][0]["synonyms"];
                 console.log(synonymsArray);
+
+                // conversion en chaine de caractères et affichage dans la Div
                 const synonymString =synonymsArray.join(", ");
                 synonymsContainer.innerHTML = `<strong> Synonyms </strong>: ${synonymString} <br> <br>`;
 
                 console.log(synonymString);
 
-                const objecttotest = data[0]["phonetics"]
-                console.log(typeof(objecttotest));
-                console.log(objecttotest);
+                // const objecttotest = data[0]["phonetics"]
+                // console.log(typeof(objecttotest));
+                // console.log(objecttotest);
 
+                // test de l'existance du tableau "phonetics" et affichage du HP barré si absent
                 if(data[0]["phonetics"].length ==0 ){
  
                     // const audioSpeaker = data[0]["phonetics"][0]["audio"]
@@ -90,7 +132,7 @@ document.addEventListener("mouseup",  async function(event) {
                     iconAudio.style = containerStyle;
                     selectedContainer.appendChild(iconAudio);
 
-                    
+                // test de l'existencee de la clé "audio et même comportement que plus haut"
                 } else if (data[0]["phonetics"][0]["audio"]=="") {
                     
                     console.log("test");
@@ -103,17 +145,18 @@ document.addEventListener("mouseup",  async function(event) {
 
 
                 }else{
-                 
+                    //sinon récupération du fichier de prononciation
                     const audioSpeaker = data[0]["phonetics"][0]["audio"]
                     
                     console.log(audioSpeaker);
-
+                    // création de l'élément cliquable de lancement du son
                     const iconAudio = document.createElement("p")
                     iconAudio.innerText = "🔈"
                     iconAudio.style = containerStyle;
 
                     selectedContainer.appendChild(iconAudio)
 
+                    //déclenchement de la lecture du ficher son par click sur le HP
                     iconAudio.addEventListener("mousedown", function(){
                         const vocalAudio = document.createElement("audio") 
                         vocalAudio.src = audioSpeaker
@@ -122,11 +165,9 @@ document.addEventListener("mouseup",  async function(event) {
                     })
                 }
 
-                defintionContainer.innerHTML = `<strong> Definition </strong>: ${motDefinition}`;
-                
+    
 
-
-
+                // déclenchement de l'évènement recherche google par click sur le bouton
                 buttonGSearch.addEventListener("mousedown", function() {
                 console.log('button clicked');
                 const search = `https://www.google.com/search?q=${selectedString}`;
@@ -134,28 +175,26 @@ document.addEventListener("mouseup",  async function(event) {
                 // chrome.tabs.create({ url : search});
                 })
 
-                // if('click',buttonGSearch) {
-                //     let search = "https://www.google.com/search?q=" + encodeURIComponent(selectedString);
-                //     window.open(search, '_blank', 'width=800,height=600');
-                // }
-
-            
+        
                
             } else{
-                const motErreur = "couldn't find definition"
+                // si on a une erreur 404 --> URL non trouvée, on renvoit le message "Couldn't find definition"
+                const motErreur = "Couldn't find definition"
                 console.log(motErreur);
                 defintionContainer.innerText = motErreur;
             }
 
-
+            // évènement de fermetures de la popup
             window.addEventListener("scroll",() => popup.remove());
             window.addEventListener("resize",() => popup.remove());
             // window.addEventListener("click", () => popup.remove());
         
-        }, 5000)
+        // }, 5000)
 
         } 
        
+
+        // condition d'erreur
         catch(error) { 
             alert( "nothing")
           
