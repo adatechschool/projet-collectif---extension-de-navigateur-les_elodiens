@@ -53,7 +53,7 @@ document.addEventListener("mouseup",  async function(event) {
         popup.style.top = `${topPosition}px`;
         
         try {
-            setTimeout(async function() {
+            // setTimeout(async function() {
                 
             
             let response = await fetch(urlMot);
@@ -141,7 +141,7 @@ document.addEventListener("mouseup",  async function(event) {
             window.addEventListener("resize",() => popup.remove());
             // window.addEventListener("click", () => popup.remove());
         
-        }, 5000)
+        // }, 5000)
 
         } 
        
