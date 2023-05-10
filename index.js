@@ -11,6 +11,7 @@ const popupStyles = `
 
 const containerStyle= `
     display: inline-block;
+    color: white
     
 `
 
@@ -37,8 +38,11 @@ document.addEventListener("mouseup",  async function(event) {
         const defintionContainer = document.createElement("p");
         popup.appendChild(defintionContainer);
         
+        const synonymsContainer = document.createElement("p");
+        popup.appendChild(synonymsContainer);
+
         const buttonGSearch = document.createElement("button")
-        buttonGSearch.textContent = "recherche google"
+        buttonGSearch.textContent = "Google Search"
         popup.appendChild(buttonGSearch);
         
         document.body.appendChild(popup);
@@ -53,7 +57,7 @@ document.addEventListener("mouseup",  async function(event) {
         popup.style.top = `${topPosition}px`;
         
         try {
-            // setTimeout(async function() {
+            setTimeout(async function() {
                 
             
             let response = await fetch(urlMot);
@@ -63,6 +67,13 @@ document.addEventListener("mouseup",  async function(event) {
             if (response.status != 404) {
                 const motDefinition = data[0]["meanings"][0]["definitions"][0]["definition"];
                 console.log(motDefinition);
+
+                const synonymsArray = data[0]["meanings"][0]["synonyms"];
+                console.log(synonymsArray);
+                const synonymString =synonymsArray.join(", ");
+                synonymsContainer.innerHTML = `<strong> Synonyms </strong>: ${synonymString} <br> <br>`;
+
+                console.log(synonymString);
 
                 const objecttotest = data[0]["phonetics"]
                 console.log(typeof(objecttotest));
@@ -111,7 +122,7 @@ document.addEventListener("mouseup",  async function(event) {
                     })
                 }
 
-                defintionContainer.innerText = `Def : ${motDefinition}`;
+                defintionContainer.innerHTML = `<strong> Definition </strong>: ${motDefinition}`;
                 
 
 
@@ -141,7 +152,7 @@ document.addEventListener("mouseup",  async function(event) {
             window.addEventListener("resize",() => popup.remove());
             // window.addEventListener("click", () => popup.remove());
         
-        // }, 5000)
+        }, 5000)
 
         } 
        
