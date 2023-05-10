@@ -88,7 +88,7 @@ document.addEventListener("mouseup",  async function(event) {
                 defintionContainer.innerHTML = `<strong> Definition </strong> (${compteur+1}/${objectLength}) : ${motDefinition}`; // affichage de la défintiion de l'index 0 du tableau
 
                 // création d'un élément permettant le parcours des questions dispos
-                nextQuestionContainer.innerText=">"
+                nextQuestionContainer.innerHTML="&#9193"
                 //incrément du compteur pour parcours des éléments du tableau
                 compteur+=1
                 //parcours des éléments du tableau par clique sur le chevron
@@ -128,7 +128,7 @@ document.addEventListener("mouseup",  async function(event) {
                     // console.log(audioSpeaker);
                     console.log("tete");
                     const iconAudio = document.createElement("p");
-                    iconAudio.innerText = "🔇";
+                    iconAudio.innerHTML = "🔇";
                     iconAudio.style = containerStyle;
                     selectedContainer.appendChild(iconAudio);
 
@@ -151,7 +151,7 @@ document.addEventListener("mouseup",  async function(event) {
                     console.log(audioSpeaker);
                     // création de l'élément cliquable de lancement du son
                     const iconAudio = document.createElement("p")
-                    iconAudio.innerText = "🔈"
+                    iconAudio.innerHTML = "&#128266"
                     iconAudio.style = containerStyle;
 
                     selectedContainer.appendChild(iconAudio)
