@@ -2,11 +2,10 @@ const popupStyles = `
   position: absolute;
   z-index: 9999;
   max-width: 300px;
-  backdrop-filter: none;
+  backdrop-filter: blur(6px);
     
-  background-color: gainsboro;
-  border: 2px solid black;
-  border-radius: 10px;
+  border: 1px solid black;
+  border-radius: 8px;
   padding: 10px;
 
 `;
