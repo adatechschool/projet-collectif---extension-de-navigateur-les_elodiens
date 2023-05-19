@@ -1,0 +1,23 @@
+{
+    "manifest_version": 3,
+    "name": "word",
+    "description": "Show word",
+    "version": "0.0.3",
+
+    "content_scripts": [
+        {   
+            "matches": ["<all_urls>"],
+            "js": ["index.js"]
+        }
+    ],
+
+    "permissions": [
+        "activeTab",
+        "tabs"
+    ],
+
+    "action" : {
+        "default_title" : "Trouve la définition"
+    }
+}
+
